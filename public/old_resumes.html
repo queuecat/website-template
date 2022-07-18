@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/scroll.css">
+    <link rel="stylesheet" href="./css/jquery.fancybox.min.css">
+    <base target="_blank">
+    <script src="./js/live2d.js"></script>
+    <script src="./js/jQuery.min.js"></script>
+    <script src="./js/printQueueCat.js"></script>
+    <script src="./js/jquery.fancybox.min.js"></script>
+    <title>列队猫 - 简介</title>
+    <style>
+        html,
+        body {
+            /* width: 100%; */
+            margin: 0;
+            padding: 0;
+            /* background-color: #ccc; */
+        }
+        
+        body {
+            padding: 80px 0;
+            user-select: none;
+        }
+        
+        #canvas {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .animation {
+            transition: all .5s;
+            transform: translateX(200px);
+            opacity: 0;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .index {
+            width: 768px;
+            position: relative;
+            z-index: 10;
+            margin: 0 auto;
+            padding: 0 50px;
+            color: #fff;
+            height: 120px;
+            background-color: #399c9c;
+            box-sizing: border-box;
+            line-height: 120px;
+            overflow: hidden;
+            /* top: 50%;
+    margin-top: -60px; */
+        }
+        
+        .title {
+            margin: 0;
+            font-weight: normal;
+            float: left;
+        }
+        
+        #nav {
+            float: right;
+        }
+        
+        .nav_list {
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+        
+        #nav ul li {
+            display: inline-block;
+            margin-left: 20px;
+            color: #fff;
+        }
+        
+        .nav_list a {
+            text-decoration: none;
+            color: #fff;
+            float: left;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .nav_list a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+        
+        .foot {
+            width: 768px;
+            position: relative;
+            z-index: 10;
+            margin: 0 auto;
+            padding: 0 50px;
+            color: #fff;
+            height: 120px;
+            background-color: #399c9c;
+            box-sizing: border-box;
+            line-height: 120px;
+            text-align: center;
+        }
+        
+        .main {
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 768px;
+            z-index: 10;
+            position: relative;
+            background-color: rgba(255, 255, 255, 1);
+        }
+        
+        .article {
+            overflow: hidden;
+            /* margin-top: 30px; */
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s;
+            padding: 50px;
+            /* height: 1000px; */
+        }
+        
+        .article:hover {
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+            border-color: transparent;
+        }
+        
+        .article time {
+            color: #ccc;
+            font-size: 0.75rem;
+        }
+        
+        .article h1 {
+            margin-top: 5px;
+            font-weight: normal;
+            font-size: 1.5rem;
+            color: #666;
+        }
+        
+        .article a {
+            color: #258fb8;
+            text-decoration: none;
+        }
+        
+        .article a:hover {
+            text-decoration: underline;
+        }
+        
+        .article_main {
+            margin-top: 50px;
+        }
+        
+        .article_main img {
+            max-width: 100%;
+            cursor: pointer;
+            height: auto;
+        }
+        
+        .unit {
+            margin: 1.6em -60px;
+            padding: 15px;
+            background-color: #f4fbfb;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .unit div {
+            padding: 1em 45px;
+            color: #b0bec5;
+            font-size: 1em;
+            font-family: 'Source Code Pro', Consolas, 'Liberation Mono', Courier, monospace, serif;
+        }
+        
+        @media (max-width: 767px) {
+            body {
+                margin: 10px;
+                margin-bottom: 20px;
+                margin-top: 0px;
+                padding: 0;
+            }
+            .index {
+                width: 100%;
+                text-align: center;
+                line-height: 1.5;
+                padding: 20px;
+                margin-top: 20px;
+            }
+            .foot {
+                width: 100%;
+                padding: 20px;
+                line-height: 80px;
+            }
+            .title {
+                float: none;
+                line-height: inherit;
+            }
+            #nav {
+                float: none;
+                margin-top: 10px;
+                line-height: inherit;
+            }
+            #nav ul {
+                text-align: center;
+                line-height: inherit;
+            }
+            .main {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+            .article {
+                padding: 20px 5px;
+            }
+            .article time,
+            h1 {
+                margin: 5px;
+            }
+            .article_main {
+                margin: 20px 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="1100" height="996"></canvas>
+
+    <!-- 标题框部分 -->
+    <div class="animation">
+        <div class="index">
+            <h1 class="title">Hi, I'm Jack</h1>
+            <div id="nav">
+                <ul class="nav_list">
+                    <li>
+                        <a href="https://queuecat.top">简介</a>
+                    </li>
+                    <li>
+                        <a href="/Demos.html">作品</a>
+                    </li>
+                    <li>
+                        <a href="https://queuecat.top/note">笔记</a>
+                    </li>
+                    <li>
+                        <a href="https://blog.csdn.net/qq_43915356">博客</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 正文部分 -->
+        <div class="main">
+            <div class="article">
+                <time>2020-10-07</time>
+                <h1>个人简介</h1>
+                <div class="article_main">
+                    <p>
+                        <img src="./images/intro.png" alt="">
+                    </p>
+                    <div class="unit">
+                        <div>#### 个人信息</div>
+                    </div>
+                    <p>
+                        <font color="#4ab3b5" size="4" face="楷体">❝ 贾周元 / 男 / 2000 ❞</font>
+                    </p>
+                    <p>
+                        <font color="#4ab3b5" size="4" face="楷体">❝ 来自河北，现本科在读 ❞</font>
+                    </p>
+                    <p>
+                        <font color="#4ab3b5" size="4" face="楷体">❝ 邮箱：<a href="mailto:2356583659@qq.com" target="_blank" rel="noopener">2356583659@qq.com</a> ❞</font>
+                    </p>
+                    <p>
+                        <font color="#4ab3b5" size="4" face="楷体">❝ 技术博客：<a href="https://blog.csdn.net/qq_43915356" target="_blank" rel="noopener">https://blog.csdn.net/qq_43915356</a> ❞</font>
+                    </p>
+                    <p>
+                        <font color="#4ab3b5" size="4" face="楷体">❝ 学习笔记：<a href="/note/#/" target="_blank" rel="noopener">https://queuecat.top/note</a> ❞</font>
+                    </p>
+                    <p>
+                        <font color="#4ab3b5" size="4" face="楷体">❝ Github：<a href="https://github.com/queuecat" target="_blank" rel="noopener">https://github.com/queuecat</a> ❞</font>
+                    </p>
+                    <div class="unit">
+                        <div>#### 个人技能</div>
+                    </div>
+
+                    <p>
+                        <font color="#f63261" size="4" face="楷体">❝ HTML/CSS ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 80% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#f8c471" size="4" face="楷体">❝ JavaScript ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 70% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#1d121c" size="4" face="楷体">❝ Bootstrap ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 80% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#02d012" size="4" face="楷体">❝ Less ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 50% ❞</font>
+                    </p>
+                    <!-- <p>
+                        <font color="#e2d109" size="4" face="楷体">❝ React ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 60% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#760bd8" size="4" face="楷体">❝ Vue.js ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 50% ❞</font>
+                    </p> -->
+                    <p>
+                        <font color="#1c18e2" size="4" face="楷体">❝ node.js ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 80% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#e2659e" size="4" face="楷体">❝ Express ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 80% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#82e0aa" size="4" face="楷体">❝ MongoDB ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 70% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#f7573f" size="4" face="楷体">❝ MySQL ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 80% ❞</font>
+                    </p>
+                    <!-- <p>
+                        <font color="#37a7da" size="4" face="楷体">❝ 微信小程序 ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 60% ❞</font>
+                    </p> -->
+                    <p>
+                        <font color="#ad7733" size="4" face="楷体">❝ Java ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 90% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#18963a" size="4" face="楷体">❝ JavaWeb ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 80% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#9b9c67" size="4" face="楷体">❝ Spring ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 60% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#b958d0" size="4" face="楷体">❝ SpringMVC ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 60% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#7d83b5" size="4" face="楷体">❝ MyBatis ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 60% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#6eda7c" size="4" face="楷体">❝ Python ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 90% ❞</font>
+                    </p>
+                    <p>
+                        <font color="#a4a991" size="4" face="楷体">❝ C/C++ ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 90% ❞</font>
+                    </p>
+
+                    <p>
+                        <font color="#c659fd" size="4" face="楷体">❝ PhotoShop ∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙› 70% ❞</font>
+                    </p>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 尾部 -->
+        <div class="foot">
+            冀ICP备20004481号-1 ©Jack Jia
+        </div>
+    </div>
+
+
+    <script src="./js/canvas.js"></script>
+    <script>
+        $(function() {
+            $('.animation').css({
+                "transform": "translateX(0px)",
+                "opacity": 1
+            });
+            var myDate = new Date;
+            var year = myDate.getFullYear(); //获取当前年
+            var mon = (myDate.getMonth() + 1) >= 10 ? myDate.getMonth() + 1 : '0' + (myDate.getMonth() + 1); //获取当前月
+            var date = (myDate.getDate()) >= 10 ? myDate.getDate() : '0' + (myDate.getDate()); //获取当前日
+            var h = myDate.getHours() >= 10 ? myDate.getHours() : '0' + myDate.getHours(); //获取当前小时数(0-23)
+            var m = myDate.getMinutes() >= 10 ? myDate.getMinutes() : '0' + myDate.getMinutes(); //获取当前分钟数(0 - 59);
+            $("time").text(year + "-" + mon + "-" + date + " " + h + ":" + m);
+
+        })
+    </script>
+    <script>
+        $(function() {
+            $('.article_main img').on('click', function() {
+                var $img = $(this);
+
+                $.fancybox.open([{
+                    src: $img.attr('src'),
+                    type: 'image'
+                }]);
+            });
+
+            $('[data-fancybox]').fancybox({
+                // closeClickOutside: false,
+                image: {
+                    protect: true
+                }
+            });
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="keywords"
+			content="favicon,favicon.ico,favicon生成器,字母favicon,字母favicon生成,,图标,字母图标生成器,图标生成,图标生成器,字母图标,手写字母ico,ico图标生成器"
+		/>
+		<meta name="author" content="queuecat.top" />
+		<meta
+			name="description"
+			content="字母图标生成器,用于生成包含一个字符的自定义图标"
+		/>
+		<link rel="shortcut icon" href="./images/Q.ico" type="image/x-icon" />
+		<title>字母图标生成器</title>
+		<script src="https://cdn.staticfile.org/vue/2.5.22/vue.min.js"></script>
+		<!-- element-ui 的 js 文件 -->
+		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+		<!-- element-ui 的样式表文件 -->
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+		/>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+			}
+			#app {
+				height: 100%;
+				/* background-color: aquamarine; */
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.el-card {
+				width: 30%;
+				min-width: 666px;
+			}
+
+			.input {
+				width: 80px;
+			}
+
+			.btmargin {
+				margin-bottom: 15px;
+			}
+
+			.btmargin5 {
+				margin-bottom: 5px;
+			}
+
+			.btmargin15 {
+				margin-bottom: 15px;
+			}
+
+			.center {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.rimargin {
+				margin-right: 15px;
+			}
+
+			.w200 {
+				width: 250px;
+				min-width: 250px;
+			}
+
+			.lineCenter {
+				align-items: center;
+				display: flex;
+			}
+
+			.bg {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-repeat: no-repeat;
+				background-size: cover;
+				z-index: -1;
+				background-image: url('./images/Pixel_BG.jpg');
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="bg"></div>
+		<div id="app">
+			<el-card class="box-card center">
+				<div class="w250">
+					<!-- 画布 -->
+					<div class="center btmargin">
+						<canvas width="200" height="200"></canvas>
+					</div>
+					<div class="lineCenter btmargin15">
+						<span>文字：</span>
+						<el-input
+							size="mini"
+							class="input rimargin"
+							v-model="font"
+							show-word-limit
+							maxlength="1"
+							placeholder="请输入内容"
+						>
+						</el-input>
+						<el-color-picker v-model="backgroundColor"></el-color-picker>
+						<el-color-picker v-model="fontColor"></el-color-picker>
+					</div>
+					<div class="lineCenter btmargin15">
+						<span>字号：</span>
+						<el-input-number
+							v-model="fontSize"
+							@change="draw"
+							:min="1"
+							:max="20"
+							size="mini"
+						>
+						</el-input-number>
+					</div>
+					<div class="lineCenter btmargin15">
+						<span>ico/png：</span>
+						<el-switch
+							v-model="isPng"
+							active-color="#13ce66"
+							inactive-color="#ff4949"
+						>
+						</el-switch>
+					</div>
+				</div>
+				<div class="center">
+					<el-button @click="download" type="primary">下载</el-button>
+				</div>
+			</el-card>
+		</div>
+		<script>
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					backgroundColor: '#70c000',
+					font: 'A',
+					fontColor: '#fff',
+					isPng: false,
+					fontSize: 15,
+					canvas: null,
+				},
+				methods: {
+					draw() {
+						let canvas = this.canvas;
+						let ctx = canvas.getContext('2d');
+						ctx.clearRect(0, 0, 200, 200);
+						ctx.beginPath();
+						ctx.arc(100, 100, 100, 0, Math.PI * 2);
+						ctx.fillStyle = this.backgroundColor;
+						ctx.fill();
+						ctx.fillStyle = this.fontColor;
+						ctx.textAlign = 'center';
+						ctx.textBaseline = 'alphabetic';
+						ctx.font = '700 ' + this.fontSize * 10 + 'px ' + 'Arial';
+						const text = ctx.measureText(this.font);
+						if (text.actualBoundingBoxAscent) {
+							ctx.fillText(
+								this.font,
+								100,
+								100 + text.actualBoundingBoxAscent / 2
+							);
+						} else {
+							ctx.textBaseline = 'middle';
+							ctx.fillText(this.font, 100, 100);
+						}
+						ctx.clip();
+					},
+					download() {
+						let a = document.createElement('a');
+						a.download = this.font + (this.isPng ? '.png' : '.ico');
+						a.href = this.canvas.toDataURL();
+						a.click();
+						a.remove();
+					},
+				},
+				mounted() {
+					//画布
+					this.canvas = document.querySelector('canvas');
+					// 画笔
+					this.draw();
+				},
+				watch: {
+					backgroundColor: function () {
+						this.draw();
+					},
+					font: function () {
+						this.draw();
+					},
+					fontColor: function () {
+						this.draw();
+					},
+				},
+			});
+			console.log(
+				'%c案例GitHub地址：https://github.com/queuecat/CharFavicon',
+				'color:#0aa'
+			);
+			// 字体加载事件
+			document.fonts.ready.then(function () {
+				vm.draw();
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+		/>
+		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/scroll.css" />
+		<base target="_blank" />
+		<script src="./js/live2d.js"></script>
+		<script src="./js/jQuery.min.js"></script>
+		<script src="./js/printQueueCat.js"></script>
+		<link
+			rel="stylesheet"
+			href="./bootstrap-3.3.7-dist/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="./css/login.css" />
+		<style>
+			html {
+				/* width: 100%; */
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				/* background-color: #ccc; */
+			}
+
+			body {
+				/* width: 100%; */
+				margin: 0;
+				padding: 0;
+				/* width: 100%; */
+				height: 100%;
+				/* background-color: #ccc; */
+			}
+
+			#particles-js {
+				height: 100%;
+				width: 100%;
+				position: fixed;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+
+			#canvas {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				z-index: 1;
+			}
+
+			.login-body {
+				background-color: rgba(255, 255, 255, 0);
+			}
+
+			.login-container {
+				z-index: 10;
+			}
+
+			.form-image {
+				position: relative;
+				background-color: #fff;
+			}
+
+			.form-image input {
+				display: none;
+			}
+
+			.form-image img {
+				max-width: 150px;
+				vertical-align: bottom;
+			}
+			.form-image i {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				transition: opacity 0.3s;
+				text-align: center;
+				opacity: 0;
+				background: #c0c0c0;
+				font-size: 2em;
+			}
+
+			.form-image i::before {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -14px;
+				margin-left: -14px;
+			}
+
+			.form-image:hover i {
+				opacity: 0.6;
+			}
+
+			.form-image {
+				margin-bottom: 6px;
+			}
+
+			.loading::after {
+				content: '正在上传...';
+			}
+
+			@media (max-width: 767px) {
+				body {
+					margin: 10px;
+					margin-bottom: 20px;
+					margin-top: 0px;
+				}
+				.login-container {
+					width: 100%;
+					padding: 0 15px;
+				}
+				.login-container .login {
+					width: 100%;
+				}
+			}
+		</style>
+		<title>新增案例</title>
+	</head>
+
+	<body>
+		<!-- <canvas id="canvas" width="1100" height="996"></canvas> -->
+		<!-- particles.js container -->
+		<div id="particles-js"></div>
+
+		<!-- scripts -->
+		<script src="./js/particles.js/particles.js"></script>
+		<!-- <script src="./git/particles.js/demo/js/app.js"></script> -->
+		<script src="./js/testapp.js"></script>
+		<div class="login-body">
+			<div class="login-container">
+				<h4 class="title">Add Demo</h4>
+				<div class="login">
+					<!-- #cef7c9 -->
+					<form method="post" id="addForm">
+						<label>封面</label>
+						<div class="form-group">
+							<label class="form-image">
+								<input id="cover" type="file" />
+								<img src="./images/无上传.png" id="preview" />
+								<i class="glyphicon glyphicon-open"></i>
+							</label>
+							<input type="hidden" name="cover" id="hiddenCover" />
+						</div>
+						<div class="form-group">
+							<label>标题</label>
+							<input
+								name="title"
+								type="text"
+								class="form-control"
+								placeholder="请输入案例标题"
+							/>
+						</div>
+						<div class="form-group">
+							<label>内容</label>
+							<input
+								name="content"
+								type="text"
+								class="form-control"
+								placeholder="请输入内容介绍信息"
+							/>
+						</div>
+						<div class="form-group">
+							<label>链接地址</label>
+							<input
+								name="url"
+								type="text"
+								class="form-control"
+								placeholder="请输入链接地址"
+							/>
+						</div>
+						<div class="form-group">
+							<label>优先级</label>
+							<input
+								name="Priority"
+								type="text"
+								class="form-control"
+								placeholder="优先级决定展示时是否靠前（1~10）"
+							/>
+						</div>
+						<div class="form-group">
+							<label>管理员密码</label>
+							<input
+								name="password"
+								type="password"
+								class="form-control"
+								placeholder="请输入管理密码"
+							/>
+						</div>
+						<button type="submit" class="btn btn-primary">新建</button>
+						<a href="/Demos.html" target="_self">
+							<input class="btn btn-default" type="button" value="取消"
+						/></a>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- <script src="./js/canvas.js"></script> -->
+		<script>
+			// 提示位置
+			var tipsNum = 0;
+			// 错误标值
+			var errorIco = `<svg
+				t="1619016546583"
+				class="icon"
+				viewBox="0 0 1024 1024"
+				version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				p-id="2055"
+				width="200"
+				height="200"
+			>
+				<path
+					d="M512 1024a512 512 0 1 1 512-512 512 512 0 0 1-512 512z m259.072-680.192a42.752 42.752 0 0 0-60.672-60.16l-183.296 183.296-183.04-183.296a43.008 43.008 0 0 0-30.208-12.544 41.984 41.984 0 0 0-30.208 12.544 42.496 42.496 0 0 0 0 60.16l183.552 183.808-183.296 183.552a42.752 42.752 0 0 0 60.416 60.16L527.104 588.8l183.296 183.296a42.752 42.752 0 0 0 60.672-60.16L588.8 527.616l183.296-183.808z"
+					fill="#FF4040"
+					p-id="2056"
+				></path>
+			</svg>`;
+			let successIco = `<svg t="1619055525817" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2045" width="200" height="200"><path d="M512 85.333333c235.648 0 426.666667 191.018667 426.666667 426.666667s-191.018667 426.666667-426.666667 426.666667S85.333333 747.648 85.333333 512 276.352 85.333333 512 85.333333z m-74.965333 550.4L346.453333 545.152a42.666667 42.666667 0 1 0-60.330666 60.330667l120.704 120.704a42.666667 42.666667 0 0 0 60.330666 0l301.653334-301.696a42.666667 42.666667 0 1 0-60.288-60.330667l-271.530667 271.488z" fill="#52C41A" p-id="2046"></path></svg>`;
+			// 警告框
+			var tips = document.createElement('div');
+			document.body.appendChild(tips);
+			$(tips).addClass('tips').addClass('tipsHide');
+			// 获取tipsBox
+			var tipsBox = document.querySelector('.tipsBox');
+			// 当表单发生提交行为的时候
+			$('#addForm').on('submit', function () {
+				// 获取到用户在表单中输入的内容并将内容格式化成参数字符串
+				var formArr = $(this).serializeArray();
+				for (item of formArr) {
+					if (item.value.length === 0 && item.name !== 'cover') {
+						$(tips).removeClass('tipsHide');
+						tips.innerHTML = errorIco;
+						$(tips).addClass('tips')[0].innerHTML += `请输入${item.name}的内容`;
+						// 强制重排
+						tips.offsetLeft;
+						$(tips).addClass('tipsHide');
+						return false;
+					}
+				}
+				// 判断表单内容
+				var formData = $(this).serialize();
+				// 向服务器端发送添加用户的请求
+				$.ajax({
+					type: 'post',
+					url: '/upload/addDemos',
+					data: formData,
+					success: function (res) {
+						$(tips).removeClass('tipsHide');
+						tips.innerHTML = successIco;
+						$(tips)
+							.addClass('tips')
+							.css({ background: '#f0f9eb', color: '#67C23A' })[0].innerHTML +=
+							'添加成功';
+						// 强制重排
+						tips.offsetLeft;
+						$(tips).addClass('tipsHide');
+						// 成功跳转
+						setTimeout(() => {
+							location.href = '/Demos.html';
+						}, 1500);
+					},
+					error: function (xhr) {
+						$(tips).removeClass('tipsHide');
+						tips.innerHTML = errorIco;
+						$(tips).addClass('tips')[0].innerHTML += xhr.responseJSON.message;
+						// 强制重排
+						tips.offsetLeft;
+						$(tips).addClass('tipsHide');
+					},
+				});
+				// 阻止表单的默认提交行为
+				return false;
+			});
+
+			// 用户头像上传
+			// 获取头像上传表单为其添加change事件
+			$('#addForm').on('change', '#cover', function () {
+				var formData = new FormData();
+				var file = this.files[0];
+
+				if (file == undefined) {
+					return false;
+				}
+				if (file.type.indexOf('image') === -1) {
+					$(tips).removeClass('tipsHide');
+					tips.innerHTML = errorIco;
+					$(tips).addClass('tips')[0].innerHTML += '上传的文件不是图片';
+					// 强制重排
+					tips.offsetLeft;
+					$(tips).addClass('tipsHide');
+					return false;
+				}
+				if (file.size > 1024 * 1024 * 2) {
+					$(tips).removeClass('tipsHide');
+					tips.innerHTML = errorIco;
+					$(tips).addClass('tips')[0].innerHTML += '上传的文件超过2M';
+					// 强制重排
+					tips.offsetLeft;
+					$(tips).addClass('tipsHide');
+					return false;
+				}
+				formData.append('cover', file);
+				$('.form-image').toggleClass('loading');
+				$.ajax({
+					url: '/upload/upload',
+					type: 'post',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: (res) => {
+						// console.log(res)
+						$('.tips').text('');
+						$('#preview').attr('src', res);
+						$('#hiddenCover').val(res);
+						$('.form-image').toggleClass('loading');
+					},
+					error: (xhr) => {
+						$('.form-image').toggleClass('loading');
+
+						$(tips).removeClass('tipsHide');
+						tips.innerHTML = errorIco;
+						$(tips).addClass('tips')[0].innerHTML += xhr.responseJSON.message;
+						// 强制重排
+						tips.offsetLeft;
+						$(tips).addClass('tipsHide');
+					},
+				});
+			});
+		</script>
+	</body>
+</html>

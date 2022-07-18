@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+		/>
+		<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./css/scroll.css" />
+		<link rel="stylesheet" href="./css/Demos.css" />
+		<base target="_blank" />
+		<script src="./js/live2d.js"></script>
+		<script src="./js/jQuery.min.js"></script>
+		<script src="./js/printQueueCat.js"></script>
+		<script src="./js/art-template/template-web.js"></script>
+		<title>列队猫 - 部分作品</title>
+	</head>
+
+	<body>
+		<img src="./images/bg.gif" alt="" style="display: none" />
+		<canvas id="canvas" width="1100" height="996"></canvas>
+
+		<!-- 标题框部分 -->
+		<div class="animation">
+			<div class="index">
+				<h1 class="title">Hi, I'm Jack</h1>
+				<div id="nav">
+					<ul class="nav_list">
+						<li>
+							<a href="/">主页</a>
+						</li>
+						<li>
+							<a href="https://queuecat.top/resumes.html">简介</a>
+						</li>
+
+						<li>
+							<a href="https://queuecat.top/note">笔记</a>
+						</li>
+						<li>
+							<a href="https://blog.csdn.net/qq_43915356">博客</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- 正文部分 -->
+			<div class="main">
+				<div class="article">
+					<time>2020-10-07</time>
+					<a class="add" href="./addDemos.html" target="_self">添加作品</a>
+					<h1>部分作品</h1>
+					<div class="article_main">
+						<div class="list"></div>
+					</div>
+				</div>
+			</div>
+			<script type="text/html" id="ListTpl">
+				{{if data.length==0}}
+				<a href="/node/404" target="_blank" style="transform: translate(50%);">
+					<img src="./images/nodata.4d721f9d.png" />
+					<div class="info">
+						<h5>抱歉</h5>
+						<em></em>
+						<h3>
+							暂时没有任何案例项目上载 <br />或<br />
+							发生了未知错误
+						</h3>
+						<demotime>QAQ</demotime>
+
+						<span>错误页面跳转</span>
+					</div>
+					<h2 style="text-align: center;">抱歉</h2>
+				</a>
+
+				{{else}}{{each data}}
+				<a href="{{$value.url}}" target="_blank">
+					<img style="display: none" src="{{$value.cover}}" />
+					<!-- loading占位 -->
+					<div class="loading">
+						<div class="container animation-4">
+							<div class="shape shape1"></div>
+							<div class="shape shape2"></div>
+							<div class="shape shape3"></div>
+							<div class="shape shape4"></div>
+						</div>
+					</div>
+					<div class="info">
+						<h5>{{$value.title}}</h5>
+						<em></em>
+						<h3>{{$value.content}}</h3>
+						<demotime>{{$value.createAt}}</demotime>
+
+						<span>案例详情</span>
+					</div>
+					<h2 style="text-align: center;">{{$value.title}}</h2>
+				</a>
+				{{/each}} {{/if}}
+			</script>
+
+			<!-- 尾部 -->
+			<div class="foot">冀ICP备20004481号-1 ©Jack Jia</div>
+		</div>
+
+		<script src="./js/canvas.js"></script>
+		<script>
+			Date.prototype.format = function (fmt) {
+				var o = {
+					'M+': this.getMonth() + 1, //月份
+					'd+': this.getDate(), //日
+					'h+': this.getHours(), //小时
+					'm+': this.getMinutes(), //分
+					's+': this.getSeconds(), //秒
+					'q+': Math.floor((this.getMonth() + 3) / 3), //季度
+					S: this.getMilliseconds(), //毫秒
+				};
+				if (/(y+)/.test(fmt)) {
+					fmt = fmt.replace(
+						RegExp.$1,
+						(this.getFullYear() + '').substr(4 - RegExp.$1.length)
+					);
+				}
+				for (var k in o) {
+					if (new RegExp('(' + k + ')').test(fmt)) {
+						fmt = fmt.replace(
+							RegExp.$1,
+							RegExp.$1.length == 1
+								? o[k]
+								: ('00' + o[k]).substr(('' + o[k]).length)
+						);
+					}
+				}
+				return fmt;
+			};
+		</script>
+		<!-- 时间显示 -->
+		<script>
+			$(function () {
+				$('.animation').css({
+					transform: 'translateX(0px)',
+					opacity: 1,
+				});
+				var myDate = new Date();
+				var year = myDate.getFullYear(); //获取当前年
+				var mon =
+					myDate.getMonth() + 1 >= 10
+						? myDate.getMonth() + 1
+						: '0' + (myDate.getMonth() + 1); //获取当前月
+				var date =
+					myDate.getDate() >= 10 ? myDate.getDate() : '0' + myDate.getDate(); //获取当前日
+				var h =
+					myDate.getHours() >= 10 ? myDate.getHours() : '0' + myDate.getHours(); //获取当前小时数(0-23)
+				var m =
+					myDate.getMinutes() >= 10
+						? myDate.getMinutes()
+						: '0' + myDate.getMinutes(); //获取当前分钟数(0 - 59);
+				$('time').text(year + '-' + mon + '-' + date + ' ' + h + ':' + m);
+				//Ajax请求渲染案例模板
+				$.ajax({
+					type: 'post',
+					url: '/upload/getDemos',
+					success: (data) => {
+						// console.log(data.message);
+						//根据优先级将数组排序
+						var result = data.message.sort((a, b) => {
+							return b.Priority - a.Priority;
+						});
+						result = result.map((item, index) => {
+							item.createAt = new Date(item.createAt).format('yyyy-MM-dd');
+
+							return item;
+						});
+						var html = template('ListTpl', {
+							data: result,
+						});
+						// console.log(html);
+						$('.list').html(html);
+						// 图片加载完成，显示图片
+						$('img').each(function () {
+							$(this).on('load', function () {
+								console.log(this);
+
+								$(this).show().next().hide();
+							});
+						});
+					},
+					error: (err) => {
+						// console.log(err);
+						var html = template('ListTpl', {
+							data: [],
+						});
+						// console.log(html);
+						$('.list').html(html);
+					},
+				});
+			});
+
+			// 图片加载完成，显示图片
+			// $(window).on('load', function () {
+			// 			$('.list').removeClass('loading-start');
+			// 			console.log(123);
+			// 		});
+		</script>
+	</body>
+</html>

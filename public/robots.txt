@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /HNAP1
+Disallow: /vendor
+Disallow: /mifs
+Disallow: /GponForm
+Disallow: /sdk

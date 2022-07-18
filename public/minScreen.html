@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-4.5.0-dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+    <title>抱歉！暂不支持移动端浏览</title>
+    <style>
+        body {
+            padding: 50px;
+            background-color: #F5F5F5;
+            background-image: url(./images/bg.gif);
+        }
+
+        .w {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .alert {
+            background-color: #fff;
+        }
+
+        .alert h3 {
+            font-family: "Microsoft Yahei";
+            font-weight: bold;
+        }
+
+        .alert p a {
+            word-break: break-all;
+            color: #4ab3b5;
+        }
+
+        .img {
+            text-align: center;
+        }
+
+        .img img {
+            max-width: 250px;
+            width: 100%;
+        }
+
+        @media (max-width: 767px) {
+            body {
+                padding: 20px;
+            }
+
+            .w {
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .wide {
+                display: none;
+            }
+        }
+
+        @media (min-width: 767px) {
+            .narrow {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="alert w" role="alert">
+        <div class="img">
+            <!-- <img src="./images/nodata.4d721f9d.png" alt=""> -->
+            <img src="./images/BoxCat.png" alt="">
+
+        </div>
+
+        <h3 class="alert-heading wide" style="text-align: center;">好挤呀！<br>换一个大一点的屏幕再来吧！</h3>
+        <h3 class="alert-heading narrow" style="text-align: center;">好挤呀！<br>我要大屏幕！</h3>
+        <hr>
+        <h5 style="font-weight: bold;">您还可以浏览：</h5>
+        <p>主站：<a href="https://queuecat.top">https://queuecat.top</a></p>
+        <!-- <hr> -->
+        <p>GitHub：<a href="https://github.com/queuecat">https://github.com/queuecat/</a></p>
+        <!-- <hr> -->
+        <p>CSDN：<a href="https://blog.csdn.net/qq_43915356">https://blog.csdn.net/qq_43915356</a></p>
+        <!-- <hr> -->
+        <p>笔记本：<a href="https://queuecat.top/note">https://queuecat.top/note</a></p>
+    </div>
+    <footer>
+        <footer-background>
+            <figure class="clouds"></figure>
+            <figure class="background"></figure>
+            <figure class="foreground"></figure>
+        </footer-background>
+    </footer>
+    <style>
+        footer footer-background {
+            bottom: 0;
+            left: 0;
+            height: 18rem;
+            /* position: absolute; */
+            position: fixed;
+            width: 100%;
+            z-index: -1;
+            transform: translate3d(0, 0, 0)
+        }
+
+        footer footer-background figure {
+            bottom: 0;
+            left: 0;
+            height: 15rem;
+            margin: 0;
+            position: absolute;
+            width: 100%
+        }
+
+        footer footer-background .foreground {
+            background-repeat: repeat-x !important;
+            background: url(https://cdn.jsdelivr.net/gh/BNDong/Cnblogs-Theme-SimpleMemory@master/img/webp/foreground.webp) repeat-x;
+            background-size: 225em 15em;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0
+        }
+
+        footer footer-background .background {
+            background-repeat: repeat-x !important;
+            background: url(https://cdn.jsdelivr.net/gh/BNDong/Cnblogs-Theme-SimpleMemory@master/img/webp/background.webp) repeat-x;
+            background-size: 225em 21.313em;
+            position: absolute;
+            top: -1em;
+            right: 0;
+            bottom: 0;
+            left: 0
+        }
+
+        footer footer-background .clouds {
+            background-repeat: repeat-x !important;
+            background: url(https://cdn.jsdelivr.net/gh/BNDong/Cnblogs-Theme-SimpleMemory@master/img/webp/clouds.webp) repeat-x;
+            background-size: 225em 15em;
+            position: absolute;
+            top: -2em;
+            right: 0;
+            bottom: 0;
+            left: 0
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="keywords" content="列队猫,博客，主页">
+    <meta name="author" content="queuecat.top">
+    <meta name="description" content="列队猫的个人主页！" />
+    <link rel="stylesheet" href="./css/scroll.css">
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/live2d.js"></script>
+    <script src="./js/jQuery.min.js"></script>
+    <script src="./js/printQueueCat.js"></script>
+    <title>列队猫 - 主页</title>
+    <style>
+        body {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- particles.js container -->
+    <div id="particles-js"></div>
+
+    <!-- scripts -->
+    <script src="./js/particles.js/particles.js"></script>
+    <!-- <script src="./git/particles.js/demo/js/app.js"></script> -->
+    <script src="./js/testapp.js"></script>
+
+    <!-- 标题框部分 -->
+    <div id="index-wrapper">
+        <div class="index">
+            <h1 class="title">Hi, I'm Jack</h1>
+            <div id="nav">
+                <ul class="nav_list">
+                    <li>
+                        <a href="./resumes.html">简介</a>
+                    </li>
+                    <li>
+                        <a href="/Demos.html">作品</a>
+                    </li>
+                    <li>
+                        <a href="/note">笔记</a>
+                    </li>
+                    <li>
+                        <a href="https://blog.csdn.net/qq_43915356">博客</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        $(function() {
+            var $particle = $('#particles-js').css({
+                display: 'none'
+            }).removeClass('hide');
+            var $navH1 = $('.title, #nav').hide();
+            var flag = document.body.scrollWidth < 700 ? true : false;
+            var $header = $('.index')
+                .css({
+                    height: 0,
+                    padding: 0
+                })
+                .animate({
+                    height: 120,
+                    padding: flag ? 20 : 0,
+                    paddingLeft: flag ? 0 : 50,
+                    paddingRight: flag ? 0 : 50
+                }, 800, function() {
+                    $particle.fadeIn(600);
+                    $navH1.fadeIn(600);
+                });
+
+            $(window).on('resize', () => {
+                flag = document.body.scrollWidth < 770 ? true : false;
+                if (flag) {
+
+                    $('.index').css("padding", "20px 0px")
+
+                } else {
+
+
+                    $('.index').css("padding", "0px 50px")
+                }
+            })
+            $('.nav_list a').on('click', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+
+                $particle.fadeOut(600);
+                $navH1.fadeOut(100);
+                $header.animate({
+                    height: 0,
+                    padding: 0
+                }, 800, function() {
+                    window.location.href = $this.attr('href');
+                    setTimeout(() => {
+                        $header.animate({
+                            height: 120,
+                            padding: flag ? 20 : 0,
+                            paddingLeft: flag ? 0 : 50,
+                            paddingRight: flag ? 0 : 50
+                        }, 800, function() {
+                            $particle.fadeIn(600);
+                            $navH1.fadeIn(600);
+                        });
+                    }, 2000);
+
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
